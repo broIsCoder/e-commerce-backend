@@ -7,27 +7,26 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const port = process.env.PORT || 3000;
 const connectDB = require("../config/dbConnection");
-const corsOption = require("../config/corsOption");
-const verifyJwt = require("../middleware/verifyJwt"); 
+const corsOptions = require("../config/corsOptions");
+const verifyJwt = require("../middleware/verifyJwt");
 const scheduleDelivery = require("../controllers/scheduleDelivery");
 
 connectDB(); // connect to MongoDb
 
 function logger(req, res, next) {
   console.log(req.method, req.url);
+  console.log('Headers:', req.headers); // Log headers for debugging
   next();
 }
 
 app.use(logger); // console log
 app.use(cookieParser());
-app.use(cors(corsOption)); // cross origin policy
-app.use(express.static(path.join(__dirname, "public"))); // Serve static assets (static assests => e.g : CSS & images)
-app.use(express.urlencoded({ limit: "50mb", extended: true })); // Parse URL-encoded bodies ( form data => e.g : name=John&age=30&city=New+York)
-app.use(express.json({ limit: "50mb" })); // Parse JSON bodies ( stringified json => e.g : {"name":"Johhn","age":"30","city":"New York"})
+app.use(cors(corsOptions)); // cross origin policy
+app.use(express.static(path.join(__dirname, "public"))); // Serve static assets
+app.use(express.urlencoded({ limit: "50mb", extended: true })); // Parse URL-encoded bodies
+app.use(express.json({ limit: "50mb" })); // Parse JSON bodies
 
-app.get("/", (req, res) => {
-  res.send("welcome");
-});
+app.get("/", (req, res) => {res.send("Welcome")});
 app.use("/signup", require("../routes/signup"));
 app.use("/login", require("../routes/login"));
 app.use("/refresh", require("../routes/refresh"));
@@ -41,14 +40,14 @@ app.use(require("../routes/not-found"));
 mongoose.connection.once("open", () => {
   console.log("Connected to MongoDb");
   scheduleDelivery();
-  // Starts server & listen for incoming HTTP requests at port:3500
-  if (process.env.NODE_ENV === "development") {
-    app.listen(port, () => {
+  // Start server & listen for incoming HTTP requests at port:3000
+  app.listen(port, () => {
+    if (process.env.NODE_ENV === "development") {
       console.log(`Server running at http://localhost:${port}`);
-    });
-  }else{
-    console.log(`Server running at the domain`);
-  }
+    } else {
+      console.log(`Server running at the domain`);
+    }
+  });
 });
 
 module.exports = app;
