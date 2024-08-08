@@ -15,7 +15,6 @@ connectDB(); // connect to MongoDb
 
 function logger(req, res, next) {
   console.log(req.method, req.url);
-  console.log('Headers:', req.headers); // Log headers for debugging
   next();
 }
 
@@ -26,7 +25,9 @@ app.use(express.static(path.join(__dirname, "public"))); // Serve static assets
 app.use(express.urlencoded({ limit: "50mb", extended: true })); // Parse URL-encoded bodies
 app.use(express.json({ limit: "50mb" })); // Parse JSON bodies
 
-app.get("/", (req, res) => {res.send("Welcome")});
+app.get("/", (req, res) => {
+  res.send("Welcome");
+});
 app.use("/signup", require("../routes/signup"));
 app.use("/login", require("../routes/login"));
 app.use("/refresh", require("../routes/refresh"));
@@ -40,14 +41,20 @@ app.use(require("../routes/not-found"));
 mongoose.connection.once("open", () => {
   console.log("Connected to MongoDb");
   scheduleDelivery();
-  // Start server & listen for incoming HTTP requests at port:3000
-  app.listen(port, () => {
-    if (process.env.NODE_ENV === "development") {
-      console.log(`Server running at http://localhost:${port}`);
+
+  if (process.env.NODE_ENV === "development") {
+    if (process.env.HOST) {
+      app.listen(port, process.env.HOST, () => {
+        console.log(`Server running at http://${process.env.HOST}:${port}`);
+      });
     } else {
-      console.log(`Server running at the domain`);
+      app.listen(port, () => {
+        console.log(`Server running at http://localhost:${port}`);
+      });
     }
-  });
+  }else{
+    console.log("Server running at the domain`")
+  }
 });
 
 module.exports = app;

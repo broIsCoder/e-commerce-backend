@@ -4,6 +4,7 @@
   "main": "api/index.js",
   "scripts": {
     "start": "node api/index.js",
+    "host-local-network":"NODE_ENV=development ALLOWED_ORIGINS=http://192.168.18.61:5173 HOST=0.0.0.0 nodemon api/index.js",
     "dev": "NODE_ENV=development ALLOWED_ORIGINS=http://localhost:5173 nodemon api/index.js",
     "build": "echo 'No build step needed for Express.js app'"
   },
