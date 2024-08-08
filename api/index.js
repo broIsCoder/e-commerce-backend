@@ -18,7 +18,7 @@ function logger(req, res, next) {
   next();
 }
 
-app.use(logger); // console log
+app.use(logger);
 app.use(cookieParser());
 app.use(cors(corsOptions)); // cross origin policy
 app.use(express.static(path.join(__dirname, "public"))); // Serve static assets

@@ -50,10 +50,11 @@ const loginController = async (req, res) => {
     foundUser.refreshToken = refreshToken;
     await foundUser.save();
 
+    console.log("secure = ",process.env.NODE_ENV === 'production'.toString())
     // Set refreshToken as http-only-cookie
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
-      secure: true  , // Set to true if using HTTPS or localhost(chrome)
+      secure: process.env.NODE_ENV === 'production', // Set to true if using HTTPS or localhost(chrome)
       sameSite: 'None', // Use 'None' if frontend and backend are on different domains
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in milliseconds
     });    

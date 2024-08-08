@@ -1,5 +1,9 @@
 const User = require("../models/User");
-const { sendResponse, handleBadRequest, handleServerError } = require("../utils/helperFunctions");
+const {
+  sendResponse,
+  handleBadRequest,
+  handleServerError,
+} = require("../utils/helperFunctions");
 
 const logoutController = async (req, res) => {
   try {
@@ -23,7 +27,11 @@ const logoutController = async (req, res) => {
     await foundUser.save(); // Save changes
 
     // Clear cookies on the client side
-    res.clearCookie("refreshToken", { httpOnly: true, sameSite: 'None', secure: true });
+    res.clearCookie("refreshToken", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",    // Set to true if using HTTPS or localhost(chrome)
+      sameSite: "None",          // Use 'None' if frontend and backend are on different domains
+    });
 
     return sendResponse(res, 200, {}, "You have logged out");
   } catch (error) {

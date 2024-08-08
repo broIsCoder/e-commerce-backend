@@ -3,9 +3,7 @@ const { handleBadRequest, handleServerError } = require("../utils/helperFunction
 
 const verifyJwt = async (req, res, next) => {
   const authHeader = req.headers["authorization"];
-  // if (!authHeader || !authHeader.startsWith("Bearer ")) {
-  //   return handleBadRequest(res, 400, "Auth Header was not provided");
-  // }
+  
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return handleBadRequest(res, 400, "Auth Header was not provided or is not in the correct format");
   }
