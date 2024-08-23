@@ -44,7 +44,7 @@ mongoose.connection.once("open", () => {
   
   // vercel will manage cron job while in production
   if(process.env.NODE_ENV === "development"){
-  cron.schedule('0 0 * * *', handler);  // Schedule the cron job to run every 24 hours (at midnight)
+    cron.schedule('* * * * *', handler);        // Schedule the cron job to run every 1 minute
   }
 
   if (process.env.NODE_ENV === "development") {
