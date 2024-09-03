@@ -1,5 +1,5 @@
 ## NOTE : 
-Deployments , you see in  github are blocked by cors by me , use this link below : 
+Deployments , you see in Github , will not receive any request from the client (frontend ) , you link below instead : 
 ## Deployed Url : 
 https://e-commerce-backend-sepia-seven.vercel.app/
 
