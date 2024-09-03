@@ -1,3 +1,4 @@
+## NOTE : Deployments , you see in  github are blocked by cors by me , use this link below : 
 ## Deployed Url : https://e-commerce-backend-sepia-seven.vercel.app/
 
 ## Features
